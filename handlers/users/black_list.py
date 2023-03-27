@@ -12,8 +12,14 @@ from loader import dp
 
 @dp.message_handler(Text(equals="📜 Qora ro'yxat"))
 async def bot_start(message: types.Message):
-    await message.answer("👇Tanlang bo'limni barcha so'zlarni o'chirsangiz bu funktsiya o'chadi:",
-                            reply_markup=BLACK_LIST)
+    await message.answer("Qora ro'yxat har bir gurhda alohida ishlaydi\n"\
+                        "/addword qora ro'yxatga so'z qo'shish. (Namuna: /addword reklama)\n"\
+                        "/delword qora ro'yxatdan so'z olib tashlash. (Namuna: /delword reklama)\n"\
+                        "/clear qora ro'yxatni tozalash.")
+
+
+    # await message.answer("👇Tanlang bo'limni barcha so'zlarni o'chirsangiz bu funktsiya o'chadi:",
+    #                         reply_markup=BLACK_LIST)
     
 
 @dp.callback_query_handler(text_contains="black_list_words")
