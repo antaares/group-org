@@ -146,7 +146,7 @@ async def clear_words(message: types.Message):
 @dp.message_handler(IsGroup(),content_types=types.ContentType.ANY,)
 async def read_only_mode(message: types.Message):
     me_ = await bot.get_me()
-    member = message.chat.get_member(me_.id)
+    member = await bot.get_chat_member(message.chat.id,me_.id)
     if member.is_chat_admin() == False:
         await message.answer("Guruhda admin emasman, ishlamayman!")
         return
