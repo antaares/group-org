@@ -119,7 +119,7 @@ async def add_word(message: types.Message):
         await message.answer("So'zni kiriting! Namuna: /addword reklama")
         return
     for word in args:
-        db.add_black_word(word = word.replace(",", ""),chat_id = message.chat.id)
+        db.add_black_word(word = word.lower().replace(",", ""),chat_id = message.chat.id)
     await message.answer("So'zlar qora ro'yxatga qo'shildi!")
 
 
@@ -131,7 +131,7 @@ async def del_word(message: types.Message):
         await message.answer("So'zni kiriting! Namuna: /delword reklama")
         return
     for word in args:
-        db.delete_black_word(message.chat.id, word=word.replace(",", ""))
+        db.delete_black_word(message.chat.id, word=word.lower().replace(",", ""))
     await message.answer("So'zlar qora ro'yxatdan o'chirildi!")
 
 
@@ -152,13 +152,13 @@ async def read_only_mode(message: types.Message):
         return
     is_black = False
     if message.text and " " in message.text:
-        for word in message.text.split():
+        for word in message.text.lower().split():
             black_words = db.get_black_list(message.chat.id) or []
             if word in black_words:
                 is_black = True
                 break
     elif message.text:
-        word = message.text
+        word = message.text.lower()
         black_words = db.get_black_list(message.chat.id) or []
         if word in black_words:
             is_black = True
@@ -169,5 +169,6 @@ async def read_only_mode(message: types.Message):
     member = message.from_user
     member_id = member.id
     await message.reply(f"{member.get_mention(as_html=True)} sizning xabaringizda qora ro'yxatdagi so'z mavjud. Sizga yozish huquqi o'chirildi. \n")
-    await message.chat.restrict(user_id=member_id, can_send_messages=False)
+    until_date = datetime.datetime.now() + datetime.timedelta(hours=4)
+    await message.chat.restrict(user_id=member_id, can_send_messages=False, until_date=until_date)
     await message.delete()
