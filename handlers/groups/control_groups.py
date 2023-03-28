@@ -8,7 +8,7 @@ from aiogram.dispatcher.filters import Command
 from aiogram.utils.exceptions import BadRequest
 
 from filters import IsGroup
-from filters.is_admin import IsChatAdmin
+from filters.is_admin import IsChatAdmin, IsNotAdmin
 from filters.is_group import BlackWord
 from loader import dp, bot, db
 
@@ -143,7 +143,7 @@ async def clear_words(message: types.Message):
 
 
 
-@dp.message_handler(IsGroup(),content_types=types.ContentType.ANY,)
+@dp.message_handler(IsGroup(),IsNotAdmin(),content_types=types.ContentType.ANY,)
 async def read_only_mode(message: types.Message):
     me_ = await bot.get_me()
     member = await bot.get_chat_member(message.chat.id,me_.id)
