@@ -20,7 +20,7 @@ async def read_only_mode(message: types.Message):
     print(message.text)
     member = message.reply_to_message.from_user
     member_id = member.id
-    chat_id = message.chat.id
+    
     command_parse = re.compile(r"(!ro|/ro) ?(\d+)? ?([\w+\D]+)?")
     parsed = command_parse.match(message.text)
     time = parsed.group(2)
@@ -46,11 +46,11 @@ async def read_only_mode(message: types.Message):
     await message.answer(f"Foydalanuvchi {message.reply_to_message.from_user.full_name} {time} minut yozish huquqidan mahrum qilindi.\n"
                          f"Sabab: \n<b>{comment}</b>")
 
-    service_message = await message.reply("Xabar 5 sekunddan so'ng o'chib ketadi.")
+
     # 5 sekun kutib xabarlarni o'chirib tashlaymiz
     await asyncio.sleep(5)
     await message.delete()
-    await service_message.delete()
+
 
 # read-only holatdan qayta tiklaymiz
 @dp.message_handler(IsGroup(), IsChatAdmin(), Command("unro", prefixes="!/"))
@@ -69,7 +69,7 @@ async def undo_read_only_mode(message: types.Message):
         can_change_info=False,
         can_pin_messages=False,
     )
-    service_message = await message.reply("Xabar 5 sekunddan so'ng o'chib ketadi.")
+
 
     await asyncio.sleep(5)
     await message.chat.restrict(user_id=member_id, permissions=user_allowed, until_date=0)
@@ -77,7 +77,7 @@ async def undo_read_only_mode(message: types.Message):
 
     # xabarlarni o'chiramiz
     await message.delete()
-    await service_message.delete()
+
 
 # Foydalanuvchini banga yuborish (guruhdan haydash)
 @dp.message_handler(IsGroup(),  IsChatAdmin(),Command("ban", prefixes="!/"))
@@ -88,11 +88,11 @@ async def ban_user(message: types.Message):
     await message.chat.kick(user_id=member_id)
 
     await message.answer(f"Foydalanuvchi {message.reply_to_message.from_user.full_name} guruhdan haydaldi")
-    service_message = await message.reply("Xabar 5 sekunddan so'ng o'chib ketadi.")
+
 
     await asyncio.sleep(5)
     await message.delete()
-    await service_message.delete()
+
 
 # Foydalanuvchini bandan chiqarish, foydalanuvchini guruhga qo'sha olmaymiz (o'zi qo'shilishi mumkin)
 @dp.message_handler(IsGroup(), IsChatAdmin(), Command("unban", prefixes="!/"))
@@ -102,12 +102,12 @@ async def unban_user(message: types.Message):
     chat_id = message.chat.id
     await message.chat.unban(user_id=member_id)
     await message.answer(f"Foydalanuvchi {message.reply_to_message.from_user.full_name} bandan chiqarildi")
-    service_message = await message.reply("Xabar 5 sekunddan so'ng o'chib ketadi.")
+    
 
     await asyncio.sleep(5)
 
     await message.delete()
-    await service_message.delete()
+
 
 
 
@@ -148,7 +148,7 @@ async def read_only_mode(message: types.Message):
     me_ = await bot.get_me()
     member = await bot.get_chat_member(message.chat.id,me_.id)
     if member.is_chat_admin() == False:
-        await message.answer("Guruhda admin emasman, ishlamayman!")
+        await message.answer("Guruhda nazorat qilishim uchun meni admin qiling!")
         return
     is_black = False
     if message.text and " " in message.text:
@@ -168,7 +168,7 @@ async def read_only_mode(message: types.Message):
         return
     member = message.from_user
     member_id = member.id
-    await message.reply(f"{member.get_mention(as_html=True)} sizning xabaringizda qora ro'yxatdagi so'z mavjud. Sizga yozish huquqi o'chirildi. \n")
-    until_date = datetime.datetime.now() + datetime.timedelta(hours=4)
+
+    until_date = datetime.datetime.now() + datetime.timedelta(hours=6)
     await message.chat.restrict(user_id=member_id, can_send_messages=False, until_date=until_date)
     await message.delete()

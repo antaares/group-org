@@ -24,11 +24,11 @@ async def bot_start(message: types.Message):
 
 
 
-@dp.callback_query_handler(text_contains="group_list")
-async def group_list(query: types.CallbackQuery):
-    # db.get_groups()
-    await query.answer(cache_time=0)
-    await query.message.answer("👇Guruhlaringiz ro'yxati:", reply_markup=MainMenuControl)
+# @dp.callback_query_handler(text_contains="group_list")
+# async def group_list(query: types.CallbackQuery):
+#     # db.get_groups()
+#     await query.answer(cache_time=0)
+#     await query.message.answer("👇Guruhlaringiz ro'yxati:", reply_markup=MainMenuControl)
 
 
 @dp.callback_query_handler(text_contains="auto_advertising")
