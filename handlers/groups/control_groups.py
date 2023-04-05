@@ -48,8 +48,11 @@ async def read_only_mode(message: types.Message):
 
 
     # 5 sekun kutib xabarlarni o'chirib tashlaymiz
-    await asyncio.sleep(5)
-    await message.delete()
+    try:    
+        await asyncio.sleep(5)
+        await message.delete()
+    except Exception as e:
+        print(e)
 
 
 # read-only holatdan qayta tiklaymiz
@@ -76,8 +79,10 @@ async def undo_read_only_mode(message: types.Message):
     await message.reply(f"Foydalanuvchi {member.full_name} tiklandi")
 
     # xabarlarni o'chiramiz
-    await message.delete()
-
+    try:
+        await message.delete()
+    except Exception as e:
+        print(e)
 
 # Foydalanuvchini banga yuborish (guruhdan haydash)
 @dp.message_handler(IsGroup(),  IsChatAdmin(),Command("ban", prefixes="!/"))
@@ -91,8 +96,10 @@ async def ban_user(message: types.Message):
 
 
     await asyncio.sleep(5)
-    await message.delete()
-
+    try:
+        await message.delete()
+    except Exception as e:
+        print(e)
 
 # Foydalanuvchini bandan chiqarish, foydalanuvchini guruhga qo'sha olmaymiz (o'zi qo'shilishi mumkin)
 @dp.message_handler(IsGroup(), IsChatAdmin(), Command("unban", prefixes="!/"))
@@ -106,7 +113,10 @@ async def unban_user(message: types.Message):
 
     await asyncio.sleep(5)
 
-    await message.delete()
+    try:
+        await message.delete()
+    except Exception as e:
+        print(e)
 
 
 
@@ -171,4 +181,7 @@ async def read_only_mode(message: types.Message):
 
     until_date = datetime.datetime.now() + datetime.timedelta(hours=6)
     await message.chat.restrict(user_id=member_id, can_send_messages=False, until_date=until_date)
-    await message.delete()
+    try:
+        await message.delete()
+    except Exception as e:
+        print(e)
